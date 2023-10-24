@@ -6,7 +6,7 @@
         .draggable {
             position: absolute;
             background-color: aliceblue;
-            border: 1 solid orange;
+            border: 5px solid orange;
             z-index: 9;
         }
     </style>
@@ -14,7 +14,7 @@
 
 <body style="background-color: #660033;">
     
-    <div class="draggable" style="height: 20vh; width: 20vh;">
+    <div class="draggable" style="height: 20vh; width: 20vh; background-color: aqua;">
         
     </div>
     <div class="draggable" style="height: 20vh; width: 20vh;">
@@ -24,10 +24,10 @@
 
 <script>
 
-    var draggables = document.querySelectorAll("div.draggable")
+    var draggables = document.querySelectorAll(".draggable")
     draggables.forEach(element => {
         element.onmousedown = (mouseDown => {
-            console.log("mouse down")
+            element.parentNode.appendChild(element)
             // Get initial coords of mouse
             let initialMouseX = mouseDown.clientX
             let initialMouseY = mouseDown.clientY
@@ -41,13 +41,13 @@
                 let offsetY = mouseMove.clientY - initialMouseY
 
                 // Adjust the position of the element
-                element.style.left = initialElementX + offsetX
-                element.style.top = initialElementY + offsetY
+                // Adjust the position of the element
+                element.style.left = parseInt(initialElementX) + parseInt(offsetX) + "px"
+                element.style.top = parseInt(initialElementY) + parseInt(offsetY) + "px"
             })
         })
     })
     document.onmouseup = (mouseEvent => {
-        console.log("mouse up")
         document.onmousemove = null // Remove existing onmousemove actions
     })
 
