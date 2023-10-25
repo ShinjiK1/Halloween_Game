@@ -6,45 +6,26 @@
         .draggable {
             position: absolute;
             background-color: aliceblue;
-            border: 1 solid orange;
+            border: 5px solid orange;
             z-index: 9;
         }
     </style>
 </head>
 
 <body style="background-color: #660033;">
-    <div class="draggable" style="height: 20vh; width: 20vh;">
+    
+    <div class="draggable" style="height: 20vh; width: 20vh; background-color: aqua;" id="drag1" data-linked="drag2">
+
+    </div>
+    <div class="draggable" style="height: 10vh; width: 10vh; z-index: 10;" id="drag2">
         
     </div>
 </body>
 
+<script src="draggable.js"></script>
 <script>
+    let drag1 = document.getElementById("drag1")
+    let drag2 = document.getElementById("drag2")
 
-    var draggables = document.querySelectorAll("div.draggable")
-    draggables.forEach(element => {
-        element.onmousedown = (mouseDown => {
-            console.log("mouse down")
-            // Get initial coords of mouse
-            let initialMouseX = mouseDown.clientX
-            let initialMouseY = mouseDown.clientY
-            // Get initial coords of element
-            let initialElementX = element.offsetLeft
-            let initialElementY = element.offsetTop
-
-            document.onmousemove = (mouseMove => {
-                // Get difference between current mouse coords and initial
-                let offsetX = mouseMove.clientX - initialMouseX
-                let offsetY = mouseMove.clientY - initialMouseY
-
-                // Adjust the position of the element
-                element.style.left = initialElementX + offsetX
-                element.style.top = initialElementY + offsetY
-            })
-        })
-    })
-    document.onmouseup = (mouseEvent => {
-        console.log("mouse up")
-        document.onmousemove = null // Remove existing onmousemove actions
-    })
-
+    follow(drag2, drag1)
 </script>
