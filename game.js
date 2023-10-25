@@ -15,12 +15,14 @@ var deltaTime;
 var timer;
 
 var askQuestion;
+var answeredQuestion;
 
 //Vars for candy count game
 var candies = [];
 var candyImages = [];
 var canMakeCandy = true;
 var whichCandy;
+var userGuess;
 
 const request = new Request("https://v2.jokeapi.dev/joke/Spooky?blacklistFlags=nsfw,religious,racist,sexist,explicit&type=twopart");
 var question = "";
@@ -89,7 +91,9 @@ var startGame = (e) => {
     prevTime = Date.now();
     deltaTime = 0;
     timer = Math.round(1000 * (Date.now() - startTime)) / 1000;
+    var timeToMakeCandy = 300;
     askQuestion = false;
+    answeredQuestion = false;
 
     var snickersImg = new Image();
     var skittlesImg = new Image();
@@ -136,10 +140,45 @@ var startGame = (e) => {
         clear(e);
         timer = Math.round(1000 * (Date.now() - startTime)) / 1000;
         if (askQuestion) {
-            
+            if (answeredQuestion) {
+                if (whichCandy == "snickers") {
+                    if (userGuess == snickersCount) {
+                        console.log("CORRECT!");
+                    }
+                    else {
+                        console.log("WRONG!");
+                    }
+                }
+                else if (whichCandy == "skittles") {
+                    if (userGuess == skittlesCount) {
+                        console.log("CORRECT!");
+                    }
+                    else {
+                        console.log("WRONG!");
+                    }
+                }
+                else if (whichCandy == "kitkats") {
+                    if (userGuess == kitkatCount) {
+                        console.log("CORRECT!");
+                    }
+                    else {
+                        console.log("WRONG!");
+                    }
+                }
+                else if (whichCandy == "lolipops") {
+                    if (userGuess == lolipopCount) {
+                        console.log("CORRECT!");
+                    }
+                    else {
+                        console.log("WRONG!");
+                    }
+                }
+                //Stop game here
+                
+            }
         }
         else {
-            if (canMakeCandy) {
+            if (canMakeCandy && timer < 12000) {
                 candyRNG = Math.floor(Math.random() * 4);
                 if (candyRNG == 0) {
                     candies.push(new Candy(Math.floor(Math.random() * 1100), 0, 0)); //Make these constructors a bit better later
@@ -160,7 +199,7 @@ var startGame = (e) => {
                 canMakeCandy = false;
                 setTimeout(() => {
                     canMakeCandy = true;
-                }, 350);
+                }, timeToMakeCandy);
             }
             console.log(candies);
             for (var i = 0; i < candies.length; i++) {
@@ -195,6 +234,7 @@ function createAnswerPrompt() {
     // Create an input element for the users guess
     var guess = document.createElement("input");
     guess.setAttribute("type", "text");
+    guess.setAttribute("id", "guess");
     guess.setAttribute("name", "guess");
     guess.setAttribute("placeholder", "?????");
 
@@ -213,12 +253,42 @@ function createAnswerPrompt() {
     form.appendChild(s);
 
     document.getElementById("questionDiv").appendChild(form);
-    form.addEventListener('submit', onSubmit);
+    form.addEventListener('submit', storeAnswer);
 }
 
-var onSubmit = (e) => {
-    e.preventDefault();
-    console.log("OK");
+/* Probably not needed
+function onSuccess(response) {
+    console.log(response);
+    console.log(response.json());
+    return response.json();
 }
+
+function onError(data) {
+    console.error(data);
+}
+
+function sendForm(currentForm) {
+    return fetch(action, setOptions(currentForm));
+}
+
+function onSubmit(e) {
+    e.preventDefault();
+    const { currentTarget } = event;
+    sendForm(currentTarget)
+        .then(response => onSuccess(response, currentTarget))
+        .catch(onError);
+}
+*/
+
+function storeAnswer(e) {
+    e.preventDefault();
+
+    //don't think it's necessary to do anything extra/with FormData for this, but
+    //I could be wrong and have to change this later.
+    userGuess = document.getElementById("guess").value;
+    answeredQuestion = true;
+    console.log(document.getElementById("guess").value);
+}
+
 
 startButton.addEventListener("click", startGame);
