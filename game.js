@@ -263,8 +263,8 @@ function createAnswerPrompt() {
     // Append the guess input to the form
     form.appendChild(guess);
 
-    // Inserting a line break
-    form.appendChild(br.cloneNode());
+    // // Inserting a line break
+    // form.appendChild(br.cloneNode());
 
     // Append the submit button to the form
     form.appendChild(s);

@@ -1,0 +1,57 @@
+// // What number is the ghost thinking of?
+// var gameState = 3; //Different value for each mode, we will run the code for the mode that corresponds to each value.
+// var c = document.getElementById("playground");
+// var ctx = c.getContext("2d");
+
+
+if (true) {
+    // Set up form
+    document.getElementById("questionDiv").innerHTML = "What is the ghost thinking about?"
+    createAnswerPrompt()
+
+    const wordArray = `apples autumn bats black bones boo broom cackle candy cat cauldron costumes creepy doorbell Dracula eerie excitement fall flashlight Frankenstein frighten games ghosts ghoul goblin graveyard Halloween haunted house hayride hoot howl jack-o-lantern mask monster moonlight mummy night October orange owl party potion prank pumpkins safety scare shadows skeleton skull spell spider spirit spooky sweets treat trick vampire warlock web werewolf wigs witch zombie`
+    .split(" ")
+
+    // Choose a random word
+    var word = wordArray[Math.floor(Math.random() * wordArray.length)]
+    console.log(word)
+    // Set the size of the text
+    var wordWidth = 100;
+    var wordHeight = 20;
+    ctx.font = `${wordHeight}px serif`
+    ctx.textBaseline = "top" // draw text from the top
+    // Randomly generate the text on the canvas
+    var randomX = Math.floor(Math.random() * (ctx.canvas.clientWidth - wordWidth))
+    var randomY = Math.floor(Math.random() * (ctx.canvas.clientHeight - wordHeight))
+    ctx.fillText(word, randomX, randomY)
+
+    // Convert canvas coords to world coords
+    var canvasBoundingBox = c.getBoundingClientRect()
+    var worldX = canvasBoundingBox.x + randomX
+    var worldY = canvasBoundingBox.y + randomY
+    console.log(worldX, worldY)
+    // Create an image at the world coords
+    var image = document.createElement("img")
+    image.className = "draggable"
+    makeDraggable(image)
+    var imageWidth = 120
+    var imageHeight = 150
+    image.style.left = `${worldX}px`
+    image.style.top = `${worldY - imageHeight / 2}px`
+    image.style.height = `${imageHeight}px`
+    image.style.width = `${imageWidth}px`
+    image.src = "ghost.png"
+    document.body.appendChild(image)
+
+    // Add listener for submitting
+    document.getElementById("guess").onchange = (event) => {
+        if ((event.target.value).trim() == word.trim()) {
+            console.log("correct")
+            image.remove()
+            ctx.clearRect(0, 0, 1400, 600)
+        } else {
+            console.log(event.target.value.trim(), " is not ", word)
+        }
+    }
+
+}
