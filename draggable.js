@@ -28,6 +28,7 @@ function makeDraggable(element) {
         }
 
         document.onmousemove = (mouseMove => {
+            mouseMove.preventDefault()
             // Get difference between current mouse coords and initial
             let offsetX = mouseMove.clientX - initialMouseX
             let offsetY = mouseMove.clientY - initialMouseY
