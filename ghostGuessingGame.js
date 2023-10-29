@@ -1,20 +1,15 @@
-// // What number is the ghost thinking of?
-// var gameState = 3; //Different value for each mode, we will run the code for the mode that corresponds to each value.
-// var c = document.getElementById("playground");
-// var ctx = c.getContext("2d");
+// gameState 2
+// What number is the ghost thinking of?
 
-
-if (true) {
+function ghostThinkingGame() {
     // Set up form
-    document.getElementById("questionDiv").innerHTML = "What is the ghost thinking about?"
-    createAnswerPrompt()
+    document.getElementById("questionPrompt").innerHTML = "What is the ghost thinking about?"
 
     const wordArray = `apples autumn bats black bones boo broom cackle candy cat cauldron costumes creepy doorbell Dracula eerie excitement fall flashlight Frankenstein frighten games ghosts ghoul goblin graveyard Halloween haunted house hayride hoot howl jack-o-lantern mask monster moonlight mummy night October orange owl party potion prank pumpkins safety scare shadows skeleton skull spell spider spirit spooky sweets treat trick vampire warlock web werewolf wigs witch zombie`
     .split(" ")
 
     // Choose a random word
     var word = wordArray[Math.floor(Math.random() * wordArray.length)]
-    console.log(word)
     // Set the size of the text
     var wordWidth = 100;
     var wordHeight = 20;
@@ -48,10 +43,14 @@ if (true) {
         if ((event.target.value).trim() == word.trim()) {
             console.log("correct")
             image.remove()
-            ctx.clearRect(0, 0, 1400, 600)
+            clear()
+            ctx.fillColor = "black";
+            ctx.font = "60px comic sans";
+            ctx.textBaseline = "bottom"
+            ctx.fillText("CORRECT!", 600, 300);
+            promptNextMinigame()
         } else {
             console.log(event.target.value.trim(), " is not ", word)
         }
     }
-
 }
