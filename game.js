@@ -14,9 +14,9 @@ var prevTime;
 var deltaTime;
 var timer;
 
-var inBetweenTransition;
 var askQuestion;
 var answeredQuestion;
+var alive;
 
 //Vars for candy count game
 var candies = [];
@@ -100,6 +100,7 @@ var startGame = (e) => {
     var timeToMakeCandy = 200; //Determines the spawn rate of the candy
     askQuestion = false;
     answeredQuestion = false;
+    alive = true;
 
     var snickersImg = new Image();
     var skittlesImg = new Image();
@@ -156,14 +157,16 @@ var startGame = (e) => {
                         }
                         else {
                             ctx.fillText("WRONG!", 600, 300);
+                            alive = false;
                         }
                     }
                     else if (whichCandy == "skittles") {
                         if (userGuess == skittlesCount) {
-                            ctx.fillText("WRONG!", 600, 300);
+                            ctx.fillText("Correct!", 600, 300);
                         }
                         else {
-                            ctx.fillText("CORRECT!", 600, 300);
+                            ctx.fillText("WRONG!", 600, 300);
+                            alive = false;
                         }
                     }
                     else if (whichCandy == "kitkats") {
@@ -172,6 +175,7 @@ var startGame = (e) => {
                         }
                         else {
                             ctx.fillText("WRONG!", 600, 300);
+                            alive = false;
                         }
                     }
                     else if (whichCandy == "lolipops") {
@@ -180,12 +184,11 @@ var startGame = (e) => {
                         }
                         else {
                             ctx.fillText("WRONG!", 600, 300);
+                            alive = false;
                         }
                     }
-                    if (!inBetweenTransition) {
-                        inBetweenTransition = true;
+                    if (alive) {
                         setTimeout(() => {
-                            inBetweenTransition = false;
                             gameState++;
                         }, 5000);
                     }
@@ -217,7 +220,6 @@ var startGame = (e) => {
                         canMakeCandy = true;
                     }, timeToMakeCandy);
                 }
-                console.log(candies);
                 for (var i = 0; i < candies.length; i++) {
                     //ctx.fillStyle = "black";
                     //ctx.fillRect(candies[i].x, candies[i].y, candies[i].width, candies[i].height);
