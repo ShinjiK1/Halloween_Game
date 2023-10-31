@@ -6,6 +6,7 @@ var candyImages = [];
 var canMakeCandy = true;
 var whichCandy;
 var userGuess;
+var alive;
 
 class Candy {
     constructor(x, y, type) {
@@ -55,6 +56,7 @@ function candyCountingGame() {
     var timeToMakeCandy = 200; //Determines the spawn rate of the candy
     askQuestion = false;
     answeredQuestion = false;
+    alive = true;
 
     var snickersImg = new Image();
     var skittlesImg = new Image();
@@ -112,15 +114,17 @@ function candyCountingGame() {
                         }
                         else {
                             ctx.fillText("WRONG!", 600, 300);
+                            alive = false;
                         }
                     }
                     else if (whichCandy == "skittles") {
                         if (userGuess == skittlesCount) {
-                            ctx.fillText("WRONG!", 600, 300);
+                            ctx.fillText("Correct!", 600, 300);
+                            promptNextMinigame()
                         }
                         else {
-                            ctx.fillText("CORRECT!", 600, 300);
-                            promptNextMinigame()
+                            ctx.fillText("WRONG!", 600, 300);
+                            alive = false;
                         }
                     }
                     else if (whichCandy == "kitkats") {
@@ -130,6 +134,7 @@ function candyCountingGame() {
                         }
                         else {
                             ctx.fillText("WRONG!", 600, 300);
+                            alive = false;
                         }
                     }
                     else if (whichCandy == "lolipops") {
@@ -139,15 +144,14 @@ function candyCountingGame() {
                         }
                         else {
                             ctx.fillText("WRONG!", 600, 300);
+                            alive = false;
                         }
                     }
-                    if (!inBetweenTransition) {
-                        inBetweenTransition = true;
-                        setTimeout(() => {
-                            inBetweenTransition = false;
-                            gameState++;
-                        }, 5000);
-                    }
+                    // if (alive) {
+                    //     setTimeout(() => {
+                    //         gameState++;
+                    //     }, 5000);
+                    // }
                     //Stop game here
 
                 }
