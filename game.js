@@ -8,8 +8,8 @@ var ctx = c.getContext("2d");
 var startButton = document.getElementById("buttonStart");
 var br = document.createElement("br");
 var requestID;
-var questionPrompt;
-var guess;
+//var questionPrompt;
+//var guess;
 
 var startTime;
 var prevTime;
@@ -18,6 +18,7 @@ var timer;
 
 var askQuestion;
 var answeredQuestion;
+var answerPromptExists;
 
 //Vars for candy count game
 var candies = [];
@@ -31,8 +32,8 @@ var question = "";
 var punchline = "";
 
 function beginMinigame() {
-    guess.value = ""
-    questionPrompt.innerHTML = ""
+    //guess.value = ""
+    //questionPrompt.innerHTML = ""
     switch (gameState) {
         case 1:
             candyCountingGame()
@@ -55,9 +56,9 @@ function promptNextMinigame() {
 }
 
 var setup = function() {
-    createAnswerPrompt()
-    questionPrompt = document.getElementById("questionPrompt")
-    guess = document.getElementById("guess")
+    //createAnswerPrompt()
+    //questionPrompt = document.getElementById("questionPrompt")
+    //guess = document.getElementById("guess")
     startButton.innerHTML = "Next Game"
     startButton.removeEventListener("click", setup)
     startButton.addEventListener("click", nextMinigame)

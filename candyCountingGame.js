@@ -7,6 +7,7 @@ var canMakeCandy = true;
 var whichCandy;
 var userGuess;
 var alive;
+var answerPromptExists;
 
 class Candy {
     constructor(x, y, type) {
@@ -89,13 +90,14 @@ function candyCountingGame() {
     else if (candyRNG == 3) {
         whichCandy = "lolipops";
     }
+    var question = "How many " + whichCandy + " appear?"
     // const prompt = document.createElement("p");
     // const question = document.createTextNode("How many " + whichCandy + " appear?");
     // prompt.append(question);
 
-    // const questionDiv = document.getElementById("questionDiv");
+    const questionDiv = document.getElementById("questionDiv");
     // questionDiv.appendChild(prompt);
-    document.getElementById("questionPrompt").innerHTML = "How many " + whichCandy + " appear?"
+    answerPromptExists = false;
 
     var runGame = (e) => { //Right now there's only 1 gamemode, but later change this to do different things based on the gameState variable.
         if (gameState == 1) {
@@ -147,6 +149,9 @@ function candyCountingGame() {
                             alive = false;
                         }
                     }
+                        if (answerPromptExists) {
+        deleteAnswerPrompt();
+    }
                     // if (alive) {
                     //     setTimeout(() => {
                     //         gameState++;
@@ -157,7 +162,11 @@ function candyCountingGame() {
                 }
             }
             else {
-                if (canMakeCandy && timer < 12000) {
+                if (timer < 2000) {
+                    ctx.font = "60px comic sans";
+                    ctx.fillText(question, 350, 300);
+                }
+                else if (canMakeCandy && timer < 14000 && timer > 2000) {
                     candyRNG = Math.floor(Math.random() * 4);
                     if (candyRNG == 0) {
                         candies.push(new Candy(Math.floor(Math.random() * 1100), 0, 0)); //Make these constructors a bit better later
@@ -180,7 +189,6 @@ function candyCountingGame() {
                         canMakeCandy = true;
                     }, timeToMakeCandy);
                 }
-                console.log(candies);
                 for (var i = 0; i < candies.length; i++) {
                     //ctx.fillStyle = "black";
                     //ctx.fillRect(candies[i].x, candies[i].y, candies[i].width, candies[i].height);
@@ -195,7 +203,7 @@ function candyCountingGame() {
             }
             if (timer > 15000 && askQuestion == false) {
                 askQuestion = true;
-                // createAnswerPrompt();
+                createAnswerPrompt();
             }
         }
         //console.log("running game");
@@ -203,4 +211,52 @@ function candyCountingGame() {
     }
 
     runGame();
+}
+
+function createAnswerPrompt() {
+    // Create a form dynamically
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("id", "answerPrompt");
+
+    // Create an input element for the users guess
+    var guess = document.createElement("input");
+    guess.setAttribute("type", "text");
+    guess.setAttribute("id", "guess");
+    guess.setAttribute("name", "guess");
+    guess.setAttribute("placeholder", "?????");
+
+    // create a submit button
+    var s = document.createElement("input");
+    s.setAttribute("type", "submit");
+    s.setAttribute("value", "Submit");
+
+    // Append the guess input to the form
+    form.appendChild(guess);
+
+    // // Inserting a line break
+    // form.appendChild(br.cloneNode());
+
+    // Append the submit button to the form
+    form.appendChild(s);
+
+    document.getElementById("questionDiv").appendChild(form);
+    form.addEventListener('submit', storeAnswer);
+    answerPromptExists = true;
+}
+
+function deleteAnswerPrompt() {
+    const element = document.getElementById("answerPrompt");
+    element.remove();
+    answerPromptExists = false;
+}
+
+function storeAnswer(e) {
+    e.preventDefault();
+
+    //don't think it's necessary to do anything extra/with FormData for this, but
+    //I could be wrong and have to change this later.
+    userGuess = document.getElementById("guess").value;
+    answeredQuestion = true;
+    console.log(document.getElementById("guess").value);
 }
