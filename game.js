@@ -16,9 +16,15 @@ var prevTime;
 var deltaTime;
 var timer;
 
-var inBetweenTransition;
 var askQuestion;
 var answeredQuestion;
+
+//Vars for candy count game
+var candies = [];
+var candyImages = [];
+var canMakeCandy = true;
+var whichCandy;
+var userGuess;
 
 const request = new Request("https://v2.jokeapi.dev/joke/Spooky?blacklistFlags=nsfw,religious,racist,sexist,explicit&type=twopart");
 var question = "";
@@ -88,6 +94,7 @@ function createAnswerPrompt() {
     // Create a form dynamically
     var form = document.createElement("form");
     form.setAttribute("method", "post");
+    form.setAttribute("id", "answerPrompt");
 
     // Create an input element for the users guess
     var guess = document.createElement("input");
@@ -112,6 +119,13 @@ function createAnswerPrompt() {
 
     document.getElementById("questionDiv").appendChild(form);
     form.addEventListener('submit', storeAnswer);
+    answerPromptExists = true;
+}
+
+function deleteAnswerPrompt() {
+    const element = document.getElementById("answerPrompt");
+    element.remove();
+    answerPromptExists = false;
 }
 
 /* Probably not needed
