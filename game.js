@@ -16,6 +16,7 @@ var timer;
 
 var askQuestion;
 var answeredQuestion;
+var answerPromptExists;
 var alive;
 
 //Vars for candy count game
@@ -133,12 +134,17 @@ var startGame = (e) => {
     else if (candyRNG == 3) {
         whichCandy = "lolipops";
     }
+    var question = "How many " + whichCandy + " appear?";
+
+    /*
     const prompt = document.createElement("p");
     const question = document.createTextNode("How many " + whichCandy + " appear?");
     prompt.append(question);
+    */
 
     const questionDiv = document.getElementById("questionDiv");
-    questionDiv.appendChild(prompt);
+    //questionDiv.appendChild(prompt);
+    answerPromptExists = false;
 
 
     var runGame = (e) => { //Right now there's only 1 gamemode, but later change this to do different things based on the gameState variable.
@@ -187,6 +193,9 @@ var startGame = (e) => {
                             alive = false;
                         }
                     }
+                    if (answerPromptExists) {
+                        deleteAnswerPrompt();
+                    }
                     if (alive) {
                         setTimeout(() => {
                             gameState++;
@@ -197,7 +206,11 @@ var startGame = (e) => {
                 }
             }
             else {
-                if (canMakeCandy && timer < 12000) {
+                if (timer < 2000) {
+                    ctx.font = "60px comic sans";
+                    ctx.fillText(question, 400, 300);
+                }
+                else if (canMakeCandy && timer < 14000 && timer > 2000) {
                     candyRNG = Math.floor(Math.random() * 4);
                     if (candyRNG == 0) {
                         candies.push(new Candy(Math.floor(Math.random() * 1100), 0, 0)); //Make these constructors a bit better later
@@ -232,7 +245,7 @@ var startGame = (e) => {
                     }
                 }
             }
-            if (timer > 15000 && askQuestion == false) {
+            if (timer > 17000 && askQuestion == false) {
                 askQuestion = true;
                 createAnswerPrompt();
             }
@@ -249,6 +262,7 @@ function createAnswerPrompt() {
     // Create a form dynamically
     var form = document.createElement("form");
     form.setAttribute("method", "post");
+    form.setAttribute("id", "answerPrompt");
 
     // Create an input element for the users guess
     var guess = document.createElement("input");
@@ -273,6 +287,13 @@ function createAnswerPrompt() {
 
     document.getElementById("questionDiv").appendChild(form);
     form.addEventListener('submit', storeAnswer);
+    answerPromptExists = true;
+}
+
+function deleteAnswerPrompt() {
+    const element = document.getElementById("answerPrompt");
+    element.remove();
+    answerPromptExists = false;
 }
 
 /* Probably not needed
