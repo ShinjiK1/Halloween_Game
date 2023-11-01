@@ -100,7 +100,7 @@ function candyCountingGame() {
     answerPromptExists = false;
 
     var runGame = (e) => { //Right now there's only 1 gamemode, but later change this to do different things based on the gameState variable.
-        if (gameState == 1) {
+        if (true) {
             deltaTime = Date.now() - prevTime;
             window.cancelAnimationFrame(requestID);
             clear(e);
@@ -228,6 +228,7 @@ function createAnswerPrompt() {
 
     // create a submit button
     var s = document.createElement("input");
+    s.setAttribute("id", "submit")
     s.setAttribute("type", "submit");
     s.setAttribute("value", "Submit");
 

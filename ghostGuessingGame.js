@@ -4,7 +4,7 @@
 function ghostThinkingGame() {
     // Set up form
     document.getElementById("questionPrompt").innerHTML = "What is the ghost thinking about?"
-
+    createAnswerPrompt()
     const wordArray = `apples autumn bats black bones boo broom cackle candy cat cauldron costumes creepy doorbell Dracula eerie excitement fall flashlight Frankenstein frighten games ghosts ghoul goblin graveyard Halloween haunted house hayride hoot howl jack-o-lantern mask monster moonlight mummy night October orange owl party potion prank pumpkins safety scare shadows skeleton skull spell spider spirit spooky sweets treat trick vampire warlock web werewolf wigs witch zombie`
     .split(" ")
 
@@ -48,9 +48,11 @@ function ghostThinkingGame() {
             ctx.font = "60px comic sans";
             ctx.textBaseline = "bottom"
             ctx.fillText("CORRECT!", 600, 300);
+            document.getElementById("questionPrompt").innerHTML = ""
+            deleteAnswerPrompt()
             promptNextMinigame()
         } else {
-            console.log(event.target.value.trim(), " is not ", word)
+            document.getElementById("questionPrompt").innerHTML = "Incorrect"
         }
     }
 }
