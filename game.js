@@ -41,10 +41,16 @@ function beginMinigame() {
             ghostThinkingGame2()
             break
         case 4:
-            recallJokeGame()
+            candyCountingGame(1);
             break
         case 5:
-            candyCountingGame()
+            recallJokeGame()
+            break
+        case 6:
+            candyCountingGame(2)
+            break
+        case 7:
+            candyCountingGame(3)
             break
     }
 }
@@ -108,12 +114,14 @@ function createAnswerPrompt() {
     document.getElementById("questionDiv").appendChild(form);
     form.addEventListener('submit', storeAnswer);
     answerPromptExists = true;
+    console.log("Created");
 }
 
 function deleteAnswerPrompt() {
     const element = document.getElementById("answerPrompt");
     element.remove();
     answerPromptExists = false;
+    console.log("Deleted");
 }
 
 /* Probably not needed

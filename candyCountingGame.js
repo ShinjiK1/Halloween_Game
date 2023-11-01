@@ -7,6 +7,7 @@ var canMakeCandy = true;
 var whichCandy;
 var userGuess;
 var alive;
+var won;
 var answerPromptExists;
 
 class Candy {
@@ -46,18 +47,38 @@ class Candy {
         this.x += this.xvel * timeScalar;
         this.y += this.yvel * timeScalar;
     }
+    harderMove(timeScalar) { //timeScalar stabilizes physics for different frame rates
+        if (this.x <= 0 || this.x >= c.width - this.width) {
+            this.xvel *= -1;
+        }
+        if (this.y <= 0 || this.y >= c.height - this.height) {
+            this.yvel *= -1;
+        }
+        this.x += this.xvel * timeScalar;
+        this.y += this.yvel * timeScalar;
+    }
 }
 
-function candyCountingGame() {
+function candyCountingGame(difficulty) {
     candies = [];
     startTime = Date.now();
     prevTime = Date.now();
     deltaTime = 0;
     timer = Math.round(1000 * (Date.now() - startTime)) / 1000;
-    var timeToMakeCandy = 200; //Determines the spawn rate of the candy
+    var timeToMakeCandy = 0;
+    if (difficulty == 1) {
+        timeToMakeCandy = 200;
+    }
+    else if (difficulty == 2) {
+        timeToMakeCandy = 150;
+    }
+    else {
+        var timeToMakeCandy = 250; //Determines the spawn rate of the candy
+    }
     askQuestion = false;
     answeredQuestion = false;
     alive = true;
+    won = false;
 
     var snickersImg = new Image();
     var skittlesImg = new Image();
@@ -109,56 +130,49 @@ function candyCountingGame() {
                 if (answeredQuestion) {
                     ctx.fillColor = "black";
                     ctx.font = "60px comic sans";
+                    if (answerPromptExists) {
+                        deleteAnswerPrompt();
+                    }
                     if (whichCandy == "snickers") {
                         if (userGuess == snickersCount) {
                             ctx.fillText("CORRECT!", 600, 300);
                             promptNextMinigame()
+                            won = true;
                         }
                         else {
                             ctx.fillText("WRONG!", 600, 300);
-                            alive = false;
                         }
                     }
                     else if (whichCandy == "skittles") {
                         if (userGuess == skittlesCount) {
                             ctx.fillText("Correct!", 600, 300);
                             promptNextMinigame()
+                            won = true;
                         }
                         else {
                             ctx.fillText("WRONG!", 600, 300);
-                            alive = false;
                         }
                     }
                     else if (whichCandy == "kitkats") {
                         if (userGuess == kitkatCount) {
                             ctx.fillText("CORRECT!", 600, 300);
                             promptNextMinigame()
+                            won = true;
                         }
                         else {
                             ctx.fillText("WRONG!", 600, 300);
-                            alive = false;
                         }
                     }
                     else if (whichCandy == "lolipops") {
                         if (userGuess == lolipopCount) {
                             ctx.fillText("CORRECT!", 600, 300);
                             promptNextMinigame()
+                            won = true;
                         }
                         else {
                             ctx.fillText("WRONG!", 600, 300);
-                            alive = false;
                         }
                     }
-                        if (answerPromptExists) {
-        deleteAnswerPrompt();
-    }
-                    // if (alive) {
-                    //     setTimeout(() => {
-                    //         gameState++;
-                    //     }, 5000);
-                    // }
-                    //Stop game here
-
                 }
             }
             else {
@@ -192,7 +206,12 @@ function candyCountingGame() {
                 for (var i = 0; i < candies.length; i++) {
                     //ctx.fillStyle = "black";
                     //ctx.fillRect(candies[i].x, candies[i].y, candies[i].width, candies[i].height);
-                    candies[i].move(deltaTime / 10000);
+                    if (difficulty == 3) {
+                        candies[i].harderMove(deltaTime / 10000);
+                    }
+                    else {
+                        candies[i].move(deltaTime / 10000);
+                    }
                     ctx.drawImage(candyImages[candies[i].type], candies[i].x, candies[i].y, candies[i].width, candies[i].height);
                 }
                 for (var i = candies.length - 1; i >= 0; i--) {
@@ -207,57 +226,10 @@ function candyCountingGame() {
             }
         }
         //console.log("running game");
-        requestID = window.requestAnimationFrame(runGame);
+        if (!won) {
+            requestID = window.requestAnimationFrame(runGame);
+        }
     }
 
     runGame();
-}
-
-function createAnswerPrompt() {
-    // Create a form dynamically
-    var form = document.createElement("form");
-    form.setAttribute("method", "post");
-    form.setAttribute("id", "answerPrompt");
-
-    // Create an input element for the users guess
-    var guess = document.createElement("input");
-    guess.setAttribute("type", "text");
-    guess.setAttribute("id", "guess");
-    guess.setAttribute("name", "guess");
-    guess.setAttribute("placeholder", "?????");
-
-    // create a submit button
-    var s = document.createElement("input");
-    s.setAttribute("id", "submit")
-    s.setAttribute("type", "submit");
-    s.setAttribute("value", "Submit");
-
-    // Append the guess input to the form
-    form.appendChild(guess);
-
-    // // Inserting a line break
-    // form.appendChild(br.cloneNode());
-
-    // Append the submit button to the form
-    form.appendChild(s);
-
-    document.getElementById("questionDiv").appendChild(form);
-    form.addEventListener('submit', storeAnswer);
-    answerPromptExists = true;
-}
-
-function deleteAnswerPrompt() {
-    const element = document.getElementById("answerPrompt");
-    element.remove();
-    answerPromptExists = false;
-}
-
-function storeAnswer(e) {
-    e.preventDefault();
-
-    //don't think it's necessary to do anything extra/with FormData for this, but
-    //I could be wrong and have to change this later.
-    userGuess = document.getElementById("guess").value;
-    answeredQuestion = true;
-    console.log(document.getElementById("guess").value);
 }
